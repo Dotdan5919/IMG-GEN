@@ -39,7 +39,7 @@ const LandingPage: React.FC = () => {
 //   .then(res => res.json())
 //   .then(res => console.log(res))
 //   .catch(err => console.error(err));
-//   };
+    };
 
   const handleClick = () => {
     // router.push('/generate');
@@ -76,7 +76,7 @@ const LandingPage: React.FC = () => {
                 </label>
                 <button 
                   // onClick={() => router.push('/generate')}
-                  onClick={handleClick()}
+                  onClick={handleClick}
                   className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors"
                 >
                   <span className="truncate">Generate Your Image</span>
