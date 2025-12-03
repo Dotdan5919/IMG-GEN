@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 import api from '@/lib/axios';
+import { useEffect, useState } from 'react';
 
 
 const GRID_IMAGES = [
@@ -25,29 +26,25 @@ const LandingPage: React.FC = () => {
 
 
 
-  const fetchData = async () => {
-    try {
-      const response = await api.get('/resources');
-      console.log('Data fetched:', response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-
-    const options = {method: 'GET', headers: {'x-freepik-api-key': 'FPSX4f6eb75be515e2e9f9e4bb1c5e26bf32'}};
-
-// fetch('https://api.freepik.com/v1/ai/mystic', options)
-//   .then(res => res.json())
-//   .then(res => console.log(res))
-//   .catch(err => console.error(err));.
+  
+  const handleClick = () => {
+    router.push('/generate');
+    // fetchData();
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get('/api/freepik');
+        console.log('API Response:', response.data);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      } finally {
+        console.log('API request completed.');
+      }
     };
 
-  const handleClick = () => {
-    // router.push('/generate');
     fetchData();
-  };
-  React.useEffect(() => {
-    // fetchData();
-  }, []); 
+  }, []);
 
   return (
     <div className="relative flex min-h-screen w-full flex-col  bg-background-dark font-display">
