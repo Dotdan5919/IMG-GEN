@@ -38,7 +38,7 @@ const LandingPage: React.FC = () => {
 // fetch('https://api.freepik.com/v1/ai/mystic', options)
 //   .then(res => res.json())
 //   .then(res => console.log(res))
-//   .catch(err => console.error(err));
+//   .catch(err => console.error(err));.
     };
 
   const handleClick = () => {
