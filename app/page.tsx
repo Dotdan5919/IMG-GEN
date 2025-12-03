@@ -6,6 +6,9 @@ import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
+import api from '@/lib/axios';
+
+
 const GRID_IMAGES = [
   { src: "https://lh3.googleusercontent.com/aida-public/AB6AXuDFJKVnCioKBqgq1Ew7OSOJVP3NRfFSfQIikLjpksAbb_pxo_sttf6YzXFw8xrVr-HA4ftZEFxV_bngUTNTe0TOcMxFhxyRnfizhTX5Oi1dKAeyD1M-383PuJyRQw_DIzkyHHyni41_Py5BvpKWAivk0E95jT5L0C6aGKzbQlIIeDdZYQX40_XIlVNXDdoNjZOSdnu02b23XlrGxj3HDijDXzknpHBeQtDOgKeA2xjXCi9wjyl0H2bVMkGeMGWJjRHcr1nODzD-8Cyq", alt: "Astronaut riding a horse" },
   { src: "https://lh3.googleusercontent.com/aida-public/AB6AXuBo0NT9Ls7ja9DNKMDftVkCJt9SoEqAaKxpcjzl744KGXCSG6j7R3YqBqBakUS-w0dxJ0j9Ohj8ST0FeQYoTqaIq-tr8dAWnFUy61Svu43ey2iB-G6-VgJjAK5vEw6h0Qxw5PUu5U44QoJLV7oy37x_w3kFckyIMm4xejX3aN6svIS6i-3FX0sSRbIrWlruNd5kX5-3hHEt0ZPJBWCa8kbKc_EGX2NykZei_n_AuPBCwnmevAOB_wp5WhYTp_3sibiyZE45opc3DXA4", alt: "Magical forest" },
@@ -19,6 +22,32 @@ const GRID_IMAGES = [
 
 const LandingPage: React.FC = () => {
   const router = useRouter();
+
+
+
+  const fetchData = async () => {
+    try {
+      const response = await api.get('/resources');
+      console.log('Data fetched:', response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+
+    const options = {method: 'GET', headers: {'x-freepik-api-key': 'FPSX4f6eb75be515e2e9f9e4bb1c5e26bf32'}};
+
+// fetch('https://api.freepik.com/v1/ai/mystic', options)
+//   .then(res => res.json())
+//   .then(res => console.log(res))
+//   .catch(err => console.error(err));
+//   };
+
+  const handleClick = () => {
+    // router.push('/generate');
+    fetchData();
+  };
+  React.useEffect(() => {
+    // fetchData();
+  }, []); 
 
   return (
     <div className="relative flex min-h-screen w-full flex-col  bg-background-dark font-display">
@@ -46,7 +75,8 @@ const LandingPage: React.FC = () => {
                   </div>
                 </label>
                 <button 
-                  onClick={() => router.push('/generate')}
+                  // onClick={() => router.push('/generate')}
+                  onClick={handleClick()}
                   className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors"
                 >
                   <span className="truncate">Generate Your Image</span>
