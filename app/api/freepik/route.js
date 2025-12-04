@@ -2,25 +2,14 @@
 
 export async function GET(request) {
   try {
-    // Create the filters object
-    const filters = {
-      'ai-generated': { 'only': 1 }
-    };
-    
-    // Properly encode it as a URL parameter
-    const url = `https://api.freepik.com/v1/resources?limit=20&filters=${encodeURIComponent(JSON.stringify(filters))}`;
-
-    const response = await fetch(url, {
+    const response = await fetch("https://api.freepik.com/v1/resources?limit=20&ai-generated=only&term=ai+generated+photo+manipulation+fantasy", {
       method: 'GET',
       headers: {
         'x-freepik-api-key': process.env.API_SECRET_KEY
-      },
-      cache: 'no-store' // Disable caching
+      }
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Freepik API error:', response.status, errorText);
       throw new Error(`API error: ${response.status}`);
     }
 
@@ -29,7 +18,7 @@ export async function GET(request) {
   } catch (error) {
     console.error('Error:', error);
     return Response.json(
-      { error: 'Failed to fetch data', details: error.message },
+      { error: 'Failed to fetch data' },
       { status: 500 }
     );
   }

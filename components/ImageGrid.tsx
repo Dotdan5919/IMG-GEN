@@ -8,6 +8,9 @@ export default function ImageGrid() {
   const [gridData, setGridData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  
+  const imagesPerPage = 8;
 
   const [filters, setFilters] = useState({
     term: 'nature',
@@ -36,8 +39,9 @@ export default function ImageGrid() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const response = await api.get('/api/freepik',  {params:filters} );
+        const response = await api.get('/api/freepik', { params: filters });
         console.log('API Response:', response.data);
         
         // Handle different response structures
@@ -52,6 +56,7 @@ export default function ImageGrid() {
         }
         
         setGridData(dataArray);
+        setCurrentPage(0); // Reset to first page when new data loads
         
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -62,7 +67,23 @@ export default function ImageGrid() {
     };
 
     fetchData();
-  }, []);
+  }, [filters]);
+
+  // Calculate pagination values
+  const totalPages = Math.ceil(gridData.length / imagesPerPage);
+  const startIndex = currentPage * imagesPerPage;
+  const endIndex = startIndex + imagesPerPage;
+  const currentImages = gridData.slice(startIndex, endIndex);
+
+  const handlePrevious = () => {
+    setCurrentPage(prev => Math.max(0, prev - 1));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNext = () => {
+    setCurrentPage(prev => Math.min(totalPages - 1, prev + 1));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   if (loading) {
     return (
@@ -117,9 +138,9 @@ export default function ImageGrid() {
         </h2>
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {gridData.slice(0, 8).map((img, idx) => (
+          {currentImages.map((img, idx) => (
             <div 
-              key={img.id} 
+              key={img.id || idx} 
               className="group relative aspect-[3/4] overflow-hidden rounded-xl"
             >
               {/* Using regular img tag - easier for external images */}
@@ -139,9 +160,34 @@ export default function ImageGrid() {
           ))}
         </div>
         
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-6 mt-8">
+            <button
+              onClick={handlePrevious}
+              disabled={currentPage === 0}
+              className="px-6 py-3 bg-white/10 hover:bg-white/20 disabled:bg-white/5 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold rounded-lg transition-all duration-200"
+            >
+              Previous
+            </button>
+            
+            <span className="text-white font-medium">
+              Page {currentPage + 1} of {totalPages}
+            </span>
+            
+            <button
+              onClick={handleNext}
+              disabled={currentPage >= totalPages - 1}
+              className="px-6 py-3 bg-white/10 hover:bg-white/20 disabled:bg-white/5 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold rounded-lg transition-all duration-200"
+            >
+              Next
+            </button>
+          </div>
+        )}
+        
         {/* Show total count */}
-        <p className="text-white text-center mt-8">
-          Showing {Math.min(8, gridData.length)} of {gridData.length} images
+        <p className="text-white text-center mt-4 text-sm opacity-75">
+          Showing {startIndex + 1}-{Math.min(endIndex, gridData.length)} of {gridData.length} images
         </p>
       </div>
     </section>
