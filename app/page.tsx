@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import ImageGrid from '@/components/ImageGrid';
 
 import api from '@/lib/axios';
 import { useEffect, useState } from 'react';
@@ -31,20 +32,7 @@ const LandingPage: React.FC = () => {
     router.push('/generate');
     // fetchData();
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get('/api/freepik');
-        console.log('API Response:', response.data);
-      } catch (err) {
-        console.error('Error fetching data:', err);
-      } finally {
-        console.log('API request completed.');
-      }
-    };
-
-    fetchData();
-  }, []);
+ 
 
   return (
     <div className="relative flex min-h-screen w-full flex-col  bg-background-dark font-display">
@@ -84,7 +72,7 @@ const LandingPage: React.FC = () => {
         </section>
 
         {/* Image Grid */}
-        <section className="py-16">
+        {/* <section className="py-16">
           <div className="container mx-auto px-4">
             <h2 className="text-white text-center text-3xl font-bold leading-tight tracking-[-0.015em] mb-8">Explore the Possibilities</h2>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -97,7 +85,9 @@ const LandingPage: React.FC = () => {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
+
+        <ImageGrid />
 
         {/* How It Works */}
         <section className="py-16 sm:py-20">

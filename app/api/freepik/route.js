@@ -2,7 +2,7 @@
 
 export async function GET(request) {
   try {
-    const response = await fetch('https://api.freepik.com/v1/ai/mystic', {
+    const response = await fetch('https://api.freepik.com/v1/resources', {
       method: 'GET',
       headers: {
         'x-freepik-api-key': process.env.API_SECRET_KEY
